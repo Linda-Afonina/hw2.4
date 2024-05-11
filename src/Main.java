@@ -4,21 +4,23 @@ import exceptions.WrongPasswordException;
 public class Main {
     public static void main(String[] args) {
 
+        String login = "linda";
+        String password = "1234L";
+        String confirmPassword = "1234";
+
         try {
-            register("linda", "1234l", "1234");
+            register(login, password, confirmPassword);
         } catch (WrongLoginException | WrongPasswordException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static void register(String login, String password, String confirmPassword)
-            throws WrongLoginException, WrongPasswordException {
+    public static void register(String login, String password, String confirmPassword) {
         if (login == null || login.length() > 20) {
             throw new WrongLoginException("Логин должен содержать не более 20 символов");
         }
         for (int i = 0; i < login.length(); i++) {
-            char l = login.charAt(i);
-            if (l != '_' || !Character.isLetterOrDigit(l)) {
+            if (login.charAt(i) != '_' && !Character.isLetterOrDigit(login.charAt(i))) {
                 throw new WrongLoginException("Логин может содержать только латинские буквы, цифры и знак подчеркивания.");
             }
         }
@@ -26,11 +28,12 @@ public class Main {
             throw new WrongPasswordException("Пароль должен содержать не более 20 символов");
         }
         for (int i = 0; i < password.length(); i++) {
-            char p1 = password.charAt(i);
-            char p2 = confirmPassword.charAt(i);
-            if (p1 != '_' || !Character.isLetterOrDigit(p1) || p1 != p2) {
+            if (password.charAt(i) != '_' && !Character.isLetterOrDigit(password.charAt(i))) {
                 throw new WrongPasswordException("Пароль может содержать только латинские буквы, цифры и знак подчеркивания.");
             }
+        }
+        if (!password.equals(confirmPassword)) {
+            throw new WrongPasswordException("Пароли должны совпадать.");
         }
     }
 
